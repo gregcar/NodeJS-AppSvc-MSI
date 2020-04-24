@@ -3,13 +3,13 @@ const { host, database } = require('./config');
  
 // Create connection to database
 const config = {
-    'server': `${host}`,
-    'authentication': {
-      'type': 'azure-active-directory-msi-app-service',
+    server: `${host}`,
+    authentication: { 
+        type: "azure-active-directory-msi-app-service"
     },
-    'options': {
-      'encrypt': true,
-      'database': `${database}`
+    options: {
+        "encrypt": true,
+        "database": `${database}`
     }
   };
 const connection = new Connection(config);
