@@ -1,5 +1,6 @@
-const { Connection, Request } = require("tedious");
 const { host, database } = require('./config');
+
+var Connection = require('tedious').Connection;
  
 // Create connection to database
 const config = {
@@ -10,6 +11,7 @@ const config = {
     options: {
         encrypt: true,
         database: `${database}`,
+        trustServerCertificate: true,
         debug: {
           packet: true,
           data: true,
