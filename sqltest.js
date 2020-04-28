@@ -8,20 +8,32 @@ const config = {
         type: "azure-active-directory-msi-app-service"
     },
     options: {
-        "encrypt": true,
-        "database": `${database}`
+        encrypt: true,
+        database: `${database}`,
+        debug: {
+          packet: true,
+          data: true,
+          payload: true,
+          token: true,
+          log: true
+        },
     }
   };
 const connection = new Connection(config);
  
 // Attempt to connect and execute queries if connection goes through
-connection.on("connect", err => {
+connection.on('connect', err => {
   if (err) {
     console.error(err.message);
   } else {
     queryDatabase();
   }
 });
+
+connection.on('debug', function(text) {
+    console.log(text);
+  }
+);
  
 function queryDatabase() {
   console.log("Reading rows from the Table...");
