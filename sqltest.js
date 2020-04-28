@@ -21,42 +21,33 @@ const config = {
         },
     }
   };
-const connection = new Connection(config);
- 
-// Attempt to connect and execute queries if connection goes through
-connection.on('connect', err => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    queryDatabase();
+
+var connection = new Connection(config);
+
+connection.on('connect', function(err) {
+  if(err) {
+    console.log('Error: ', err)
   }
+  // If no error, then good to go...
+  executeStatement();
 });
 
-connection.on('debug', function(text) {
-    console.log(text);
-  }
-);
- 
-function queryDatabase() {
-  console.log("Reading rows from the Table...");
- 
-  // Read all rows from table
-  const request = new Request(
-    `SELECT TOP (10) * FROM [SalesLT].[Customer]`,
-    (err, rowCount) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        console.log(`${rowCount} row(s) returned`);
-      }
+var Request = require('tedious').Request;
+
+function executeStatement() {
+  request = new Request("SELECT TOP (1000) * FROM [SalesLT].[SalesOrderHeader]", function(err, rowCount) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(rowCount + ' rows');
     }
-  );
- 
-  request.on("row", columns => {
-    columns.forEach(column => {
-      console.log("%s\t%s", column.metadata.colName, column.value);
+  });
+
+  request.on('row', function(columns) {
+    columns.forEach(function(column) {
+      console.log(column.value);
     });
   });
- 
+
   connection.execSql(request);
 }
