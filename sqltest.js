@@ -11,7 +11,7 @@ const config = {
     options: {
         encrypt: true,
         database: `${database}`,
-        trustServerCertificate: true,
+        trustServerCertificate: false,
         debug: {
           packet: true,
           data: true,
